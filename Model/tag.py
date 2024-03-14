@@ -15,10 +15,11 @@ from Model import uuid, Permission
 
 class Tag(BaseModel):
     """tag的数据模型"""
-    tag: str
+    name: str
     permissions: List[Permission]
     targets: List[uuid]
     expire: str | None = None
+    created_by: uuid
 
 
 class TagGetResponse(Tag):
@@ -26,11 +27,14 @@ class TagGetResponse(Tag):
     pass
 
 
-class TagCreateRequest(Tag):
+class TagCreateRequest(BaseModel):
     """请求创建tag的数据模型"""
-    pass
+    name: str
+    permissions: List[Permission]
+    targets: List[uuid]
+    expire: str | None = None
 
 
-class TagUpdateRequest(Tag):
+class TagUpdateRequest(TagCreateRequest):
     """请求修改tag的数据模型"""
     expire: str | None
