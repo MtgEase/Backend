@@ -10,6 +10,14 @@ class Database:
     """
     # db存储了实际的存储后端驱动的对象
     db = None
+    tables = {
+        'user': ['uid', 'name', 'password', 'email', 'wxid', 'groups', 'tags'],
+        'group': ['group', 'name', 'permissions'],
+        'determine': ['did', 'mid', 'new_user_uid'],
+        'meeting': ['mid', 'topic', 'time_start', 'time_stop', 'rid', 'tip', 'status'],
+        'room': ['rid', 'name', 'position', 'tip', 'available', 'capacity', 'devices', 'rest'],
+        'tag': ['name', 'permissions', 'expiration', 'created_by']
+    }
 
     def __init__(self):
         # 存储后端驱动应实现增删改查的功能
@@ -26,7 +34,7 @@ with open('config.yaml') as __f:
     __args: dict = __config['DriverArgs']
 # 使用exec函数，拼接从配置文件读取到的驱动名并执行，获取到驱动后端对象
 __global_vars: dict = {}
-exec(f'from Database.StorageDriver.{__driver} import {__driver};'
+exec(f'from Database.StorageDriver.{__driver}.{__driver} import {__driver};'
      f'db = {__driver}(**{str(__args)})', __global_vars)
 # 保存实际的对象到Database的db变量
 Database.db = __global_vars['db']
