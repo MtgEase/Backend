@@ -10,13 +10,14 @@ class Database:
     """
     # db存储了实际的存储后端驱动的对象
     db = None
+    # 存储后端需要有以下表结构
     tables = {
-        'user': ['uid', 'name', 'password', 'email', 'wxid', 'groups', 'tags'],
-        'group': ['group', 'name', 'permissions'],
-        'determine': ['did', 'mid', 'new_user_uid'],
-        'meeting': ['mid', 'topic', 'time_start', 'time_stop', 'rid', 'tip', 'status'],
+        'user': ['uid', 'name', 'email', 'wxid', 'hashed_password'],
+        'group': ['gid', 'name', 'level', 'permissions', 'targets'],
+        'determine': ['did', 'is_meeting', 'id'],
+        'meeting': ['mid', 'topic', 'time_start', 'time_stop', 'room', 'tip', 'status', 'determine_step', 'created_by'],
         'room': ['rid', 'name', 'position', 'tip', 'available', 'capacity', 'devices', 'rest'],
-        'tag': ['name', 'permissions', 'expiration', 'created_by']
+        'tag': ['tid', 'name', 'permissions', 'targets', 'expire', 'created_by']
     }
 
     def __init__(self):

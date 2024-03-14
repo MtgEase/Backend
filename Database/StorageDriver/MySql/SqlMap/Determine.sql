@@ -6,10 +6,10 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `determine`;
 CREATE TABLE `determine`  (
-  `did` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'did',
-  `mid` int NULL DEFAULT NULL COMMENT '对应会议的mid',
-  `new_user_uid` int NULL DEFAULT NULL COMMENT '待注册用户的uid',
+  `did` binary(16) NOT NULL,
+  `is_meeting` bit(1) NOT NULL,
+  `id` binary(16) NOT NULL,
   PRIMARY KEY (`did`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '审批清单\r\n\r\nmid和new_user_uid取其一，优先判断mid。' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
