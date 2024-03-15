@@ -5,7 +5,7 @@ import os
 
 
 class MySqlKeyMissingError(Exception):
-    """MySql数据库缺少必要的键"""
+    """MySql数据库缺少必要的键的异常"""
     def __init__(self, table, key):
         self.args = (f'Table {table} is missing key {key}.',)
 
@@ -27,6 +27,7 @@ class MySql(Database):
         try:
             self.__check_tables()
         except MySqlKeyMissingError:
+            # Todo: Backup current database
             self.__init_tables()
 
     def __check_tables(self):
@@ -90,25 +91,3 @@ class MySql(Database):
 
     def __del__(self):
         self.close_connection()
-
-# # 示例用法
-# db = MySQLDB(host='your_host', user='your_user', password='your_password', database='your_database')
-#
-# # 创建表
-# db.create_table('example_table', 'id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), age INT')
-#
-# # 插入数据
-# db.insert_data('example_table', {'name': 'John', 'age': 25})
-#
-# # 更新数据
-# db.update_data('example_table', {'age': 26}, {'name': 'John'})
-#
-# # 删除数据
-# db.delete_data('example_table', {'name': 'John'})
-#
-# # 查询数据
-# result = db.select_data('example_table', columns=['id', 'name'], condition={'age': 26}, limit=10, offset=0)
-# print(result)
-#
-# # 关闭连接
-# db.close_connection()

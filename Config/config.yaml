@@ -2,7 +2,7 @@ Database:
   Driver: MySql
   DriverArgs:
     host: example.com
-    port: 3389
+    port: 3306
     user: root
     password: password
     database: MtgEase
