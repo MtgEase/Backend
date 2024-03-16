@@ -7,6 +7,3 @@ from Model.determine import DetermineAction, Determine, DetermineGetResponse, De
 from Model.group import Group, GroupGetResponse, GroupCreateRequest, GroupUpdateRequest
 from Model.tag import Tag, TagGetResponse, TagUpdateRequest, TagCreateRequest
 from Model.permission import Permission
-
-# 写这个UUID是为了在代码提示中突出显示方便开发，以及为了以后的扩展
-uuid = str

@@ -49,7 +49,7 @@
 ```
 tables = {
     'user': ['uid', 'name', 'email', 'wxid', 'hashed_password'],
-    'group': ['gid', 'name', 'level', 'permissions', 'targets'],
+    'group': ['gid', 'name', 'belong_to', 'permissions', 'targets'],
     'determine': ['did', 'is_meeting', 'id'],
     'meeting': ['mid', 'topic', 'time_start', 'time_stop', 'room', 'tip', 'status', 'determine_step', 'created_by'],
     'room': ['rid', 'name', 'position', 'tip', 'available', 'capacity', 'devices', 'rest'],

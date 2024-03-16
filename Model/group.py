@@ -10,13 +10,14 @@
 """
 from pydantic import BaseModel
 from typing import List
-from Model import uuid, Permission
+from .uuid import uuid
+from .permission import Permission
 
 
 class Group(BaseModel):
     """group的数据模型"""
     name: str
-    level: int
+    belong_to: uuid
     permissions: List[Permission]
     targets: List[uuid]
 

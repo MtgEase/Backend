@@ -9,7 +9,7 @@
 """
 from pydantic import BaseModel
 from enum import Enum
-from Model import uuid
+from .uuid import uuid
 
 
 class DetermineAction(str, Enum):

@@ -7,12 +7,9 @@ from Database import Database
 from uuid import UUID
 
 
-class DatabaseHandler:
-    __db = Database()
-
-
-class Manager(DatabaseHandler):
+class Manager:
     """管理并存储实例的静态类"""
+    db = Database()
     groups = {}
     tags = {}
     users = {}

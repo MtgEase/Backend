@@ -11,7 +11,7 @@
 """
 from typing import List
 from pydantic import BaseModel
-from Model import uuid
+from .uuid import uuid
 
 
 class Room(BaseModel):

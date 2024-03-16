@@ -12,7 +12,7 @@
 from pydantic import BaseModel
 from typing import List
 from enum import Enum
-from Model import uuid
+from .uuid import uuid
 
 
 class MeetingStatus(str, Enum):

@@ -10,7 +10,8 @@
 """
 from pydantic import BaseModel
 from typing import List
-from Model import uuid, Permission
+from .uuid import uuid
+from .permission import Permission
 
 
 class Tag(BaseModel):
