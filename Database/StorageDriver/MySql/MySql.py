@@ -115,7 +115,7 @@ class MySql:
         placeholders = ', '.join(['%s'] * len(data))
         columns = ', '.join(data.keys())
         values = tuple(data.values())
-        insert_query = f"INSERT INTO {table} ({columns}) VALUES ({placeholders})"
+        insert_query = f"INSERT INTO `{table}` ({columns}) VALUES ({placeholders})"
         self.cursor.execute(insert_query, values)
 
     def update_data(self, table: str, data: dict, condition: dict) -> None:
@@ -128,7 +128,7 @@ class MySql:
         set_clause = ', '.join([f"{key}=%s" for key in data.keys()])
         condition_clause = ' AND '.join([f"{key}=%s" for key in condition.keys()])
         values = tuple(list(data.values()) + list(condition.values()))
-        update_query = f"UPDATE {table} SET {set_clause} WHERE {condition_clause}"
+        update_query = f"UPDATE `{table}` SET {set_clause} WHERE {condition_clause}"
         self.cursor.execute(update_query, values)
 
     def delete_data(self, table: str, condition: dict) -> None:
@@ -138,10 +138,9 @@ class MySql:
         except pymysql.err.MySQLError as e:
             logger.error(f'[Database/MySql] CAN NOT connect to MySql!\n\t{str(e)}')
             raise HTTPException(status_code=503)
-        self.connection.ping(reconnect=True)
         condition_clause = ' AND '.join([f"{key}=%s" for key in condition.keys()])
         values = tuple(condition.values())
-        delete_query = f"DELETE FROM {table} WHERE {condition_clause}"
+        delete_query = f"DELETE FROM `{table}` WHERE {condition_clause}"
         self.cursor.execute(delete_query, values)
 
     def select_data(self, table: str, columns: list | None = None, condition: dict | None = None,
@@ -152,12 +151,11 @@ class MySql:
         except pymysql.err.MySQLError as e:
             logger.error(f'[Database/MySql] CAN NOT connect to MySql!\n\t{str(e)}')
             raise HTTPException(status_code=503)
-        self.connection.ping(reconnect=True)
         columns_clause = ', '.join(columns) if columns else '*'
         condition_clause = ' AND '.join([f"{key}=%s" for key in condition.keys()]) if condition else '1'
         limit_clause = f"LIMIT {limit}" if limit else ''
         offset_clause = f"OFFSET {offset}" if offset else ''
-        select_query = f"SELECT {columns_clause} FROM {table} WHERE {condition_clause} {limit_clause} {offset_clause}"
+        select_query = f"SELECT {columns_clause} FROM `{table}` WHERE {condition_clause} {limit_clause} {offset_clause}"
         values = tuple(condition.values()) if condition else ()
         self.cursor.execute(select_query, values)
         return self.cursor.fetchall()
