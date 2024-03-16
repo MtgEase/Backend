@@ -7,9 +7,12 @@ from Database import Database
 from uuid import UUID
 
 
-class Object:
-    """管理并存储实例的静态类"""
+class DatabaseHandler:
     __db = Database()
+
+
+class Manager(DatabaseHandler):
+    """管理并存储实例的静态类"""
     groups = {}
     tags = {}
     users = {}
@@ -21,16 +24,16 @@ class Object:
     def is_uuid_exist(uuid: str | UUID) -> bool:
         """验证给定的UUID是否已存在"""
         uuid = str(uuid)
-        if uuid in Object.groups:
+        if uuid in Manager.groups:
             return True
-        if uuid in Object.tags:
+        if uuid in Manager.tags:
             return True
-        if uuid in Object.users:
+        if uuid in Manager.users:
             return True
-        if uuid in Object.rooms:
+        if uuid in Manager.rooms:
             return True
-        if uuid in Object.meetings:
+        if uuid in Manager.meetings:
             return True
-        if uuid in Object.determines:
+        if uuid in Manager.determines:
             return True
         return False
