@@ -6,9 +6,9 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `determine`;
 CREATE TABLE `determine`  (
-  `did` binary(16) NOT NULL,
+  `did` varchar(36) NOT NULL,
   `is_meeting` bit(1) NOT NULL,
-  `id` binary(16) NOT NULL,
+  `id` varchar(36) NOT NULL,
   PRIMARY KEY (`did`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 

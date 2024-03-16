@@ -6,3 +6,9 @@ Database:
     user: root
     password: password
     database: MtgEase
+    auto_backup: true
+    auto_backup_cycle_min: 60
+    auto_backup_dir: '/app/sql_backup/'
+    # 如果数据库结构损坏，程序会自动调用mysqldump备份数据库当前状态。
+    # 若此参数为False则不再执行任何操作并报错退出；否则丢弃所有数据并重新初始化数据库。
+    init_database_confirm: false
