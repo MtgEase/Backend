@@ -1,8 +1,0 @@
-Database:
-  Driver: MySql
-  DriverArgs:
-    host: example.com
-    port: 3389
-    user: root
-    password: password
-    database: MtgEaze

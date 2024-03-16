@@ -6,7 +6,6 @@ class Database:
     """
     通用存储后端交互的基类。
     此类封装了对存储后端的增删改查功能。
-    任何对存储后端的操作对象都应该将此类作为基类以实现解耦。
     """
     # db存储了实际的存储后端驱动的对象
     db = None
@@ -20,7 +19,7 @@ class Database:
 
 
 # 读取配置文件的Database键值
-with open('config.yaml') as __f:
+with open('Config/config.yaml', 'r', encoding='utf-8') as __f:
     __config: dict = yaml.safe_load(__f)['Database']
     __driver: str = __config['Driver']
     __args: dict = __config['DriverArgs']
