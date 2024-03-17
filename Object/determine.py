@@ -1,4 +1,4 @@
-"""标签"""
+"""审批"""
 import uuid as uuid_pkg
 from Model import uuid
 from Object import Manager
