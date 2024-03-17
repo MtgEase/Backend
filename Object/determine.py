@@ -7,7 +7,7 @@ from Object import Manager
 class Determine:
     """审批"""
 
-    def __init__(self, is_meeting: bool, item_id: uuid):
+    def __init__(self, item_id: uuid, is_meeting: bool = True):
         self.__db = Manager.db
         while True:
             self.did = str(uuid_pkg.uuid4())

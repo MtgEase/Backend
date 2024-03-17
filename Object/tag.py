@@ -10,8 +10,8 @@ from Object import Manager
 class Tag:
     """用户组"""
 
-    def __init__(self, name: str, permissions: List[Permission], targets: List[str],
-                 expire: datetime, created_by: uuid):
+    def __init__(self, name: str, permissions: List[Permission], targets: List[str], created_by: uuid,
+                 expire: datetime | None = None):
         self.__db = Manager.db
         while True:
             self.tid = str(uuid_pkg.uuid4())
@@ -23,7 +23,7 @@ class Tag:
             'name': name,
             'permissions': json.dumps(permissions),
             'targets': json.dumps(targets),
-            'expire': expire.strftime("%Y-%m-%d %H:%M:%S"),
+            'expire': expire.strftime("%Y-%m-%d %H:%M:%S") if expire else None,
             'created_by': created_by
         })
         Manager.groups[self.tid] = self
@@ -62,13 +62,13 @@ class Tag:
         self.__db.update_data(table='tag', data={'targets': data}, condition={'tid': self.tid})
 
     @property
-    def expire(self) -> datetime:
+    def expire(self) -> datetime | None:
         data = self.__db.select_data(table='tag', columns=['expire'], condition={'tid': self.tid})[0][0]
         return data
 
     @expire.setter
-    def expire(self, value: datetime) -> None:
-        data = value.strftime("%Y-%m-%d %H:%M:%S")
+    def expire(self, value: datetime | None) -> None:
+        data = value.strftime("%Y-%m-%d %H:%M:%S") if value else None
         self.__db.update_data(table='tag', data={'expire': data}, condition={'tid': self.tid})
 
     @property
