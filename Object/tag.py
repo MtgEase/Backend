@@ -28,6 +28,11 @@ class Tag:
         })
         Manager.groups[self.tid] = self
 
+    def remove(self):
+        """删除对象"""
+        self.__db.delete_data(table='tag', condition={'tid': self.tid})
+        del Manager.tags[self.tid]
+
     @property
     def name(self) -> str:
         return self.__db.select_data(table='tag', columns=['name'], condition={'tid': self.tid})[0][0]

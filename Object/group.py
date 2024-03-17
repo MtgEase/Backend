@@ -25,6 +25,11 @@ class Group:
         })
         Manager.groups[self.gid] = self
 
+    def remove(self):
+        """删除对象"""
+        self.__db.delete_data(table='group', condition={'gid': self.gid})
+        del Manager.groups[self.gid]
+
     @property
     def name(self) -> str:
         return self.__db.select_data(table='group', columns=['name'], condition={'gid': self.gid})[0][0]
