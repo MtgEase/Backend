@@ -3,7 +3,7 @@ from datetime import datetime
 import json
 import uuid as uuid_pkg
 from typing import List
-from Model import Permission, uuid, MeetingStatus
+from Model import uuid, MeetingStatus
 from Object import Manager
 
 
@@ -93,7 +93,7 @@ class Meeting:
         )
 
     def determine_step_append(self, step: str) -> None:
-        steps: List[str] = self.determine_step
+        steps = self.determine_step
         steps.append(step)
         self.__db.update_data(table='meetings', data={'status': json.dumps(steps)}, condition={'mid': self.mid})
 
