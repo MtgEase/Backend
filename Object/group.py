@@ -9,7 +9,7 @@ from Object import Manager
 class Group:
     """用户组"""
 
-    def __init__(self, name: str, belong_to: str, permissions: List[Permission], targets: List[str]):
+    def __init__(self, name: str, belong_to: uuid, permissions: List[Permission], targets: List[uuid]):
         self.__db = Manager.db
         while True:
             self.gid = str(uuid_pkg.uuid4())

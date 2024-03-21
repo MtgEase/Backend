@@ -7,7 +7,7 @@ from Object import Manager
 
 
 class Room:
-    """用户组"""
+    """会议室"""
 
     def __init__(self, name: str, position: str, tip: str | None = None, available: bool = True,
                  capacity: int | None = None, devices: List[str] | None = None, rest: list[str] | None = None):
