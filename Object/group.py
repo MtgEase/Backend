@@ -2,7 +2,7 @@
 import json
 import uuid as uuid_pkg
 from typing import List
-from Model import Permission
+from Model import Permission, uuid
 from Object import Manager
 
 
@@ -39,11 +39,11 @@ class Group:
         self.__db.update_data(table='group', data={'name': value}, condition={'gid': self.gid})
 
     @property
-    def belong_to(self) -> str:
+    def belong_to(self) -> uuid:
         return self.__db.select_data(table='group', columns=['belong_to'], condition={'gid': self.gid})[0][0]
 
     @belong_to.setter
-    def belong_to(self, value: str) -> None:
+    def belong_to(self, value: uuid) -> None:
         self.__db.update_data(table='group', data={'belong_to': value}, condition={'gid': self.gid})
 
     @property
@@ -51,17 +51,31 @@ class Group:
         data = self.__db.select_data(table='group', columns=['permissions'], condition={'gid': self.gid})[0][0]
         return json.loads(data)
 
-    @permissions.setter
-    def permissions(self, value: List[Permission]) -> None:
-        data = json.dumps(value)
+    def permissions_append(self, permission: Permission) -> None:
+        data = self.permissions
+        data.append(permission)
+        data = json.dumps(data)
+        self.__db.update_data(table='group', data={'permissions': data}, condition={'gid': self.gid})
+
+    def permissions_remove(self, permission: Permission) -> None:
+        data = self.permissions
+        data.remove(permission)
+        data = json.dumps(data)
         self.__db.update_data(table='group', data={'permissions': data}, condition={'gid': self.gid})
 
     @property
-    def targets(self) -> List[str]:
+    def targets(self) -> List[uuid]:
         data = self.__db.select_data(table='group', columns=['targets'], condition={'gid': self.gid})[0][0]
         return json.loads(data)
 
-    @targets.setter
-    def targets(self, value: List[str]) -> None:
-        data = json.dumps(value)
+    def targets_append(self, target: uuid) -> None:
+        data = self.targets
+        data.append(target)
+        data = json.dumps(data)
+        self.__db.update_data(table='group', data={'targets': data}, condition={'gid': self.gid})
+
+    def targets_remove(self, target: uuid) -> None:
+        data = self.targets
+        data.remove(target)
+        data = json.dumps(data)
         self.__db.update_data(table='group', data={'targets': data}, condition={'gid': self.gid})
