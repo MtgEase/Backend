@@ -26,7 +26,7 @@ class Tag:
             'expire': expire.strftime("%Y-%m-%d %H:%M:%S") if expire else None,
             'created_by': created_by
         })
-        Manager.groups[self.tid] = self
+        Manager.tags[self.tid] = self
 
     def remove(self):
         """删除对象"""
