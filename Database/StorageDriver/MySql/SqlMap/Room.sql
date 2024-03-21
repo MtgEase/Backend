@@ -11,7 +11,7 @@ CREATE TABLE `room`  (
   `position` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `tip` tinytext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   `available` bit(1) NULL DEFAULT NULL,
-  `capacity` int NULL DEFAULT NULL,
+  `capacity` int NOT NULL,
   `devices` tinytext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   `rest` tinytext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   PRIMARY KEY (`rid`) USING BTREE
