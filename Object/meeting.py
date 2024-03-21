@@ -89,13 +89,13 @@ class Meeting:
     @property
     def determine_step(self) -> List[str]:
         return json.loads(
-            self.__db.select_data(table='meetings', columns=['status'], condition={'mid': self.mid})[0][0]
+            self.__db.select_data(table='meetings', columns=['determine_step'], condition={'mid': self.mid})[0][0]
         )
 
     def determine_step_append(self, step: str) -> None:
         steps = self.determine_step
         steps.append(step)
-        self.__db.update_data(table='meetings', data={'status': json.dumps(steps)}, condition={'mid': self.mid})
+        self.__db.update_data(table='meetings', data={'determine_step': json.dumps(steps)}, condition={'mid': self.mid})
 
     @property
     def created_by(self) -> uuid:
