@@ -28,8 +28,8 @@ class Determine:
 
     @property
     def is_meeting(self) -> bool:
-        __result = self.__db.select_data(table='determine', columns=['is_meeting'], condition={'did': self.did})[0][0]
-        return __result == b'\x01'
+        data = self.__db.select_data(table='determine', columns=['is_meeting'], condition={'did': self.did})[0][0]
+        return data == b'\x01'
 
     @property
     def id(self) -> uuid:
