@@ -46,9 +46,16 @@ class Tag:
         data = self.__db.select_data(table='tag', columns=['permissions'], condition={'tid': self.tid})[0][0]
         return json.loads(data)
 
-    @permissions.setter
-    def permissions(self, value: List[Permission]) -> None:
-        data = json.dumps(value)
+    def permissions_append(self, permission: Permission) -> None:
+        data = self.permissions
+        data.append(permission)
+        data = json.dumps(data)
+        self.__db.update_data(table='tag', data={'permissions': data}, condition={'tid': self.tid})
+
+    def permissions_remove(self, permission: Permission) -> None:
+        data = self.permissions
+        data.remove(permission)
+        data = json.dumps(data)
         self.__db.update_data(table='tag', data={'permissions': data}, condition={'tid': self.tid})
 
     @property
@@ -56,9 +63,16 @@ class Tag:
         data = self.__db.select_data(table='tag', columns=['targets'], condition={'tid': self.tid})[0][0]
         return json.loads(data)
 
-    @targets.setter
-    def targets(self, value: List[uuid]) -> None:
-        data = json.dumps(value)
+    def targets_append(self, target: uuid) -> None:
+        data = self.targets
+        data.append(target)
+        data = json.dumps(data)
+        self.__db.update_data(table='tag', data={'targets': data}, condition={'tid': self.tid})
+
+    def targets_remove(self, target: uuid) -> None:
+        data = self.targets
+        data.remove(target)
+        data = json.dumps(data)
         self.__db.update_data(table='tag', data={'targets': data}, condition={'tid': self.tid})
 
     @property
