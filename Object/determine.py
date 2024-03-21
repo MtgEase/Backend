@@ -30,14 +30,6 @@ class Determine:
     def is_meeting(self) -> bool:
         return self.__db.select_data(table='determine', columns=['is_meeting'], condition={'did': self.did})[0][0]
 
-    @is_meeting.setter
-    def is_meeting(self, value: bool) -> None:
-        self.__db.update_data(table='determine', data={'is_meeting': value}, condition={'did': self.did})
-
     @property
     def id(self) -> uuid:
         return self.__db.select_data(table='determine', columns=['id'], condition={'did': self.did})[0][0]
-
-    @id.setter
-    def id(self, value: id) -> None:
-        self.__db.update_data(table='determine', data={'id': value}, condition={'did': self.did})

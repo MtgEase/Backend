@@ -74,7 +74,3 @@ class Tag:
     @property
     def created_by(self) -> uuid:
         return self.__db.select_data(table='tag', columns=['created_by'], condition={'tid': self.tid})[0][0]
-
-    @created_by.setter
-    def created_by(self, value: uuid) -> None:
-        self.__db.update_data(table='tag', data={'created_by': value}, condition={'tid': self.tid})
