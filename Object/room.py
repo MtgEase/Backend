@@ -10,7 +10,7 @@ class Room:
     """会议室"""
 
     def __init__(self, name: str, position: str, tip: str | None = None, available: bool = True,
-                 capacity: int | None = None, devices: List[str] | None = None, rest: list[str] | None = None):
+                 capacity: int | None = None, devices: List[str] | None = None, rest: List[str] | None = None):
         self.__db = Manager.db
         while True:
             self.rid = str(uuid_pkg.uuid4())
@@ -24,8 +24,8 @@ class Room:
             'tip': tip,
             'available': available,
             'capacity': capacity,
-            'devices': devices,
-            'rest': rest
+            'devices': json.dumps(devices) if devices else None,
+            'rest': json.dumps(rest) if rest else None
         })
         Manager.rooms[self.rid] = self
 
