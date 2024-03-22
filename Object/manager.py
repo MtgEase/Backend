@@ -14,6 +14,15 @@ class Manager:
     rooms = {}
     meetings = {}
     determines = {}
+    # 取消注释下面这些代码可以使编辑器支持类型提示，但由于架构问题会导致运行时的循环导入问题
+    # from typing import Dict
+    # from Object import Group, Tag, User, Room, Meeting, Determine
+    # groups: Dict[uuid, Group] = {}
+    # tags: Dict[uuid, Tag] = {}
+    # users: Dict[uuid, User] = {}
+    # rooms: Dict[uuid, Room] = {}
+    # meetings: Dict[uuid, Meeting] = {}
+    # determines: Dict[uuid, Determine] = {}
 
     @staticmethod
     def is_uuid_exist(item_id: uuid | uuid_pkg.UUID) -> bool:
