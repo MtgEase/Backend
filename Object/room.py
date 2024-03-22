@@ -2,9 +2,8 @@
 import json
 import uuid as uuid_pkg
 from typing import List
-import Object
 from Model import uuid
-from Object import Manager
+from .manager import Manager
 
 
 class Room:
@@ -12,8 +11,8 @@ class Room:
 
     @staticmethod
     def create(name: str, position: str, tip: str | None = None, available: bool = True,
-               capacity: int | None = None, devices: List[str] | None = None, rest: List[str] | None = None) \
-            -> Object.Room:
+               capacity: int | None = None, devices: List[str] | None = None, rest: List[str] | None = None):
+        """创建实例"""
         while True:
             rid = str(uuid_pkg.uuid4())
             if not Manager.is_uuid_exist(rid):
@@ -32,7 +31,14 @@ class Room:
 
     @staticmethod
     def load(rid: uuid):
+        """加载实例"""
         return Room(rid)
+
+    @staticmethod
+    def load_all():
+        """加载全部实例"""
+        for rid in [item[0] for item in Manager.db.select_data(table='room', columns=['rid'])]:
+            Room.load(rid)
 
     def __init__(self, rid: uuid):
         self.__db = Manager.db
@@ -40,7 +46,7 @@ class Room:
         Manager.rooms[self.rid] = self
 
     def remove(self):
-        """删除对象"""
+        """删除实例"""
         self.__db.delete_data(table='room', condition={'rid': self.rid})
         del Manager.rooms[self.rid]
 

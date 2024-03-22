@@ -4,9 +4,8 @@ import os
 import uuid as uuid_pkg
 from typing import List
 from typing import Tuple
-import Object
 from Model import uuid
-from Object import Manager
+from .manager import Manager
 
 
 class User:
@@ -14,6 +13,7 @@ class User:
 
     @staticmethod
     def hash_passwd(passwd: str, salt: str | None = None) -> Tuple[str, str]:
+        """对密码进行加盐哈希"""
         if salt:
             salt = bytes.fromhex(salt)
         else:
@@ -23,12 +23,14 @@ class User:
 
     @staticmethod
     def verify_passwd(password: str, hashed_passwd: str, salt: str) -> bool:
+        """验证密码的加盐哈希值是否与记录一致"""
         salt = bytes.fromhex(salt)
         return hashlib.sha256(salt + password.encode('utf-8')).hexdigest() == hashed_passwd
 
     @staticmethod
     def create(name: str, group: uuid, email: str | None = None, wxid: str | None = None,
-               passwd: str | None = None) -> Object.User:
+               passwd: str | None = None):
+        """创建实例"""
         assert not (wxid is None and passwd is None)
         while True:
             uid = str(uuid_pkg.uuid4())
@@ -47,8 +49,15 @@ class User:
         return User(uid)
 
     @staticmethod
-    def load(uid: uuid) -> Object.User:
+    def load(uid: uuid):
+        """加载实例"""
         return User(uid)
+
+    @staticmethod
+    def load_all():
+        """加载全部实例"""
+        for uid in [item[0] for item in Manager.db.select_data(table='user', columns=['uid'])]:
+            User.load(uid)
 
     def __init__(self, uid: uuid):
         self.__db = Manager.db
@@ -56,7 +65,7 @@ class User:
         Manager.users[self.uid] = self
 
     def remove(self):
-        """删除对象"""
+        """删除实例"""
         self.__db.delete_data(table='user', condition={'uid': self.uid})
         del Manager.users[self.uid]
 

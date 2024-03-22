@@ -2,16 +2,16 @@
 import json
 import uuid as uuid_pkg
 from typing import List
-import Object
 from Model import Permission, uuid
-from Object import Manager
+from .manager import Manager
 
 
 class Group:
     """用户组"""
 
     @staticmethod
-    def create(name: str, belong_to: uuid, permissions: List[Permission]) -> Object.Group:
+    def create(name: str, belong_to: uuid, permissions: List[Permission]):
+        """创建实例"""
         while True:
             gid = str(uuid_pkg.uuid4())
             if not Manager.is_uuid_exist(gid):
@@ -25,8 +25,15 @@ class Group:
         return Group(gid)
 
     @staticmethod
-    def load(gid: uuid) -> Object.Group:
+    def load(gid: uuid):
+        """加载实例"""
         return Group(gid)
+
+    @staticmethod
+    def load_all():
+        """加载全部实例"""
+        for gid in [item[0] for item in Manager.db.select_data(table='group', columns=['gid'])]:
+            Group.load(gid)
 
     def __init__(self, gid: uuid):
         self.__db = Manager.db
@@ -34,7 +41,7 @@ class Group:
         Manager.groups[self.gid] = self
 
     def remove(self):
-        """删除对象"""
+        """删除实例"""
         self.__db.delete_data(table='group', condition={'gid': self.gid})
         del Manager.groups[self.gid]
 

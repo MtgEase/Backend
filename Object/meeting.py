@@ -3,9 +3,8 @@ from datetime import datetime
 import json
 import uuid as uuid_pkg
 from typing import List
-import Object
 from Model import uuid, MeetingStatus
-from Object import Manager
+from .manager import Manager
 
 
 class Meeting:
@@ -13,7 +12,8 @@ class Meeting:
 
     @staticmethod
     def create(topic: str, time_start: datetime, time_stop: datetime, room: uuid, created_by: uuid,
-               tip: str | None = None, determine_step: List[str] | None = None) -> Object.Meeting:
+               tip: str | None = None, determine_step: List[str] | None = None):
+        """创建实例"""
         while True:
             mid = str(uuid_pkg.uuid4())
             if not Manager.is_uuid_exist(mid):
@@ -32,8 +32,15 @@ class Meeting:
         return Meeting(mid)
 
     @staticmethod
-    def load(mid: uuid) -> Object.Meeting:
+    def load(mid: uuid):
+        """加载实例"""
         return Meeting(mid)
+
+    @staticmethod
+    def load_all():
+        """加载全部实例"""
+        for mid in [item[0] for item in Manager.db.select_data(table='meeting', columns=['mid'])]:
+            Meeting.load(mid)
 
     def __init__(self, mid: uuid):
         self.__db = Manager.db
@@ -41,7 +48,7 @@ class Meeting:
         Manager.meetings[self.mid] = self
 
     def remove(self):
-        """删除对象"""
+        """删除实例"""
         self.__db.delete_data(table='meetings', condition={'mid': self.mid})
         del Manager.meetings[self.mid]
 

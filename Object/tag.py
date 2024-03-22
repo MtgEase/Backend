@@ -3,9 +3,8 @@ from datetime import datetime
 import json
 import uuid as uuid_pkg
 from typing import List
-import Object
 from Model import Permission, uuid
-from Object import Manager
+from .manager import Manager
 
 
 class Tag:
@@ -13,7 +12,8 @@ class Tag:
 
     @staticmethod
     def create(name: str, permissions: List[Permission], targets: List[str], created_by: uuid,
-               expire: datetime | None = None) -> Object.Tag:
+               expire: datetime | None = None):
+        """创建实例"""
         while True:
             tid = str(uuid_pkg.uuid4())
             if not Manager.is_uuid_exist(tid):
@@ -29,8 +29,15 @@ class Tag:
         return Tag(tid)
 
     @staticmethod
-    def load(tid: uuid) -> Object.Tag:
+    def load(tid: uuid):
+        """加载实例"""
         return Tag(tid)
+
+    @staticmethod
+    def load_all():
+        """加载全部实例"""
+        for tid in [item[0] for item in Manager.db.select_data(table='tag', columns=['tid'])]:
+            Tag.load(tid)
 
     def __init__(self, tid: uuid):
         self.__db = Manager.db
