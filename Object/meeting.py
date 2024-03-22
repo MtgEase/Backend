@@ -3,6 +3,7 @@ from datetime import datetime
 import json
 import uuid as uuid_pkg
 from typing import List
+import Object
 from Model import uuid, MeetingStatus
 from Object import Manager
 
@@ -10,16 +11,15 @@ from Object import Manager
 class Meeting:
     """会议室"""
 
-    def __init__(self, topic: str, time_start: datetime, time_stop: datetime, room: uuid, created_by: uuid,
-                 tip: str | None = None, determine_step: List[str] | None = None):
-        self.__db = Manager.db
+    @staticmethod
+    def create(topic: str, time_start: datetime, time_stop: datetime, room: uuid, created_by: uuid,
+               tip: str | None = None, determine_step: List[str] | None = None) -> Object.Meeting:
         while True:
-            self.mid = str(uuid_pkg.uuid4())
-            if not Manager.is_uuid_exist(self.mid):
+            mid = str(uuid_pkg.uuid4())
+            if not Manager.is_uuid_exist(mid):
                 break
-
-        self.__db.insert_data(table='meeting', data={
-            'mid': self.mid,
+        Manager.db.insert_data(table='meeting', data={
+            'mid': mid,
             'topic': topic,
             'time_start': time_start.strftime("%Y-%m-%d %H:%M:%S"),
             'time_stop': time_stop.strftime("%Y-%m-%d %H:%M:%S"),
@@ -29,6 +29,15 @@ class Meeting:
             'determine_step': json.dumps([] if not determine_step else determine_step),
             'created_by': created_by
         })
+        return Meeting(mid)
+
+    @staticmethod
+    def load(mid: uuid) -> Object.Meeting:
+        return Meeting(mid)
+
+    def __init__(self, mid: uuid):
+        self.__db = Manager.db
+        self.mid = mid
         Manager.meetings[self.mid] = self
 
     def remove(self):

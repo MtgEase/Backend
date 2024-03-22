@@ -2,6 +2,7 @@
 import json
 import uuid as uuid_pkg
 from typing import List
+import Object
 from Model import Permission, uuid
 from Object import Manager
 
@@ -9,19 +10,27 @@ from Object import Manager
 class Group:
     """用户组"""
 
-    def __init__(self, name: str, belong_to: uuid, permissions: List[Permission], targets: List[uuid]):
-        self.__db = Manager.db
+    @staticmethod
+    def create(name: str, belong_to: uuid, permissions: List[Permission]) -> Object.Group:
         while True:
-            self.gid = str(uuid_pkg.uuid4())
-            if not Manager.is_uuid_exist(self.gid):
+            gid = str(uuid_pkg.uuid4())
+            if not Manager.is_uuid_exist(gid):
                 break
-
-        self.__db.insert_data(table='group', data={
-            'gid': self.gid,
+        Manager.db.insert_data(table='group', data={
+            'gid': gid,
             'name': name,
             'belong_to': belong_to,
             'permissions': json.dumps(permissions)
         })
+        return Group(gid)
+
+    @staticmethod
+    def load(gid: uuid) -> Object.Group:
+        return Group(gid)
+
+    def __init__(self, gid: uuid):
+        self.__db = Manager.db
+        self.gid = gid
         Manager.groups[self.gid] = self
 
     def remove(self):

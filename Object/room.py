@@ -2,6 +2,7 @@
 import json
 import uuid as uuid_pkg
 from typing import List
+import Object
 from Model import uuid
 from Object import Manager
 
@@ -9,16 +10,16 @@ from Object import Manager
 class Room:
     """会议室"""
 
-    def __init__(self, name: str, position: str, tip: str | None = None, available: bool = True,
-                 capacity: int | None = None, devices: List[str] | None = None, rest: List[str] | None = None):
-        self.__db = Manager.db
+    @staticmethod
+    def create(name: str, position: str, tip: str | None = None, available: bool = True,
+               capacity: int | None = None, devices: List[str] | None = None, rest: List[str] | None = None) \
+            -> Object.Room:
         while True:
-            self.rid = str(uuid_pkg.uuid4())
-            if not Manager.is_uuid_exist(self.rid):
+            rid = str(uuid_pkg.uuid4())
+            if not Manager.is_uuid_exist(rid):
                 break
-
-        self.__db.insert_data(table='room', data={
-            'rid': self.rid,
+        Manager.db.insert_data(table='room', data={
+            'rid': rid,
             'name': name,
             'position': position,
             'tip': tip,
@@ -27,6 +28,15 @@ class Room:
             'devices': json.dumps(devices) if devices else None,
             'rest': json.dumps(rest) if rest else None
         })
+        return Room(rid)
+
+    @staticmethod
+    def load(rid: uuid):
+        return Room(rid)
+
+    def __init__(self, rid: uuid):
+        self.__db = Manager.db
+        self.rid = rid
         Manager.rooms[self.rid] = self
 
     def remove(self):

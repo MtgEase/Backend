@@ -4,6 +4,7 @@ import os
 import uuid as uuid_pkg
 from typing import List
 from typing import Tuple
+import Object
 from Model import uuid
 from Object import Manager
 
@@ -25,18 +26,17 @@ class User:
         salt = bytes.fromhex(salt)
         return hashlib.sha256(salt + password.encode('utf-8')).hexdigest() == hashed_passwd
 
-    def __init__(self, name: str, group: uuid, email: str | None = None, wxid: str | None = None,
-                 passwd: str | None = None):
+    @staticmethod
+    def create(name: str, group: uuid, email: str | None = None, wxid: str | None = None,
+               passwd: str | None = None) -> Object.User:
         assert not (wxid is None and passwd is None)
-        self.__db = Manager.db
         while True:
-            self.uid = str(uuid_pkg.uuid4())
-            if not Manager.is_uuid_exist(self.uid):
+            uid = str(uuid_pkg.uuid4())
+            if not Manager.is_uuid_exist(uid):
                 break
-
         __salt = os.urandom(16).hex()
-        self.__db.insert_data(table='user', data={
-            'uid': self.uid,
+        Manager.db.insert_data(table='user', data={
+            'uid': uid,
             'name': name,
             'email': email,
             'wxid': wxid,
@@ -44,6 +44,15 @@ class User:
             'salt': __salt,
             'group': group
         })
+        return User(uid)
+
+    @staticmethod
+    def load(uid: uuid) -> Object.User:
+        return User(uid)
+
+    def __init__(self, uid: uuid):
+        self.__db = Manager.db
+        self.uid = uid
         Manager.users[self.uid] = self
 
     def remove(self):

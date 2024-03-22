@@ -3,6 +3,7 @@ from datetime import datetime
 import json
 import uuid as uuid_pkg
 from typing import List
+import Object
 from Model import Permission, uuid
 from Object import Manager
 
@@ -10,22 +11,30 @@ from Object import Manager
 class Tag:
     """标签"""
 
-    def __init__(self, name: str, permissions: List[Permission], targets: List[str], created_by: uuid,
-                 expire: datetime | None = None):
-        self.__db = Manager.db
+    @staticmethod
+    def create(name: str, permissions: List[Permission], targets: List[str], created_by: uuid,
+               expire: datetime | None = None) -> Object.Tag:
         while True:
-            self.tid = str(uuid_pkg.uuid4())
-            if not Manager.is_uuid_exist(self.tid):
+            tid = str(uuid_pkg.uuid4())
+            if not Manager.is_uuid_exist(tid):
                 break
-
-        self.__db.insert_data(table='tag', data={
-            'tid': self.tid,
+        Manager.db.insert_data(table='tag', data={
+            'tid': tid,
             'name': name,
             'permissions': json.dumps(permissions),
             'targets': json.dumps(targets),
             'expire': expire.strftime("%Y-%m-%d %H:%M:%S") if expire else None,
             'created_by': created_by
         })
+        return Tag(tid)
+
+    @staticmethod
+    def load(tid: uuid) -> Object.Tag:
+        return Tag(tid)
+
+    def __init__(self, tid: uuid):
+        self.__db = Manager.db
+        self.tid = tid
         Manager.tags[self.tid] = self
 
     def remove(self):

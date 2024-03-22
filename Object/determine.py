@@ -1,5 +1,6 @@
 """审批"""
 import uuid as uuid_pkg
+import Object
 from Model import uuid
 from Object import Manager
 
@@ -7,18 +8,26 @@ from Object import Manager
 class Determine:
     """审批"""
 
-    def __init__(self, item_id: uuid, is_meeting: bool = True):
-        self.__db = Manager.db
+    @staticmethod
+    def create(item_id: uuid, is_meeting: bool = True) -> Object.Determine:
         while True:
-            self.did = str(uuid_pkg.uuid4())
-            if not Manager.is_uuid_exist(self.did):
+            did = str(uuid_pkg.uuid4())
+            if not Manager.is_uuid_exist(did):
                 break
-
-        self.__db.insert_data(table='determine', data={
-            'did': self.did,
+        Manager.db.insert_data(table='determine', data={
+            'did': did,
             'is_meeting': is_meeting,
             'id': item_id
         })
+        return Determine(did)
+
+    @staticmethod
+    def load(did: uuid) -> Object.Determine:
+        return Determine(did)
+
+    def __init__(self, did: uuid):
+        self.__db = Manager.db
+        self.did = did
         Manager.determines[self.did] = self
 
     def remove(self):
