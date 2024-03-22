@@ -17,7 +17,9 @@ from .user import User
 
 class Manager:
     """管理并存储实例的静态类"""
+    # 数据库连接对象
     db = Database()
+    # 存储已有的实例的列表
     groups: Dict[uuid, Group] = {}
     tags: Dict[uuid, Tag] = {}
     users: Dict[uuid, User] = {}
@@ -42,3 +44,28 @@ class Manager:
         if item_id in Manager.determines:
             return True
         return False
+
+    @staticmethod
+    def load_objects():
+        """从数据库中读取已有的实例"""
+        dids = [item[0] for item in Manager.db.select_data(table='determine', columns=['did'])]
+        for did in dids:
+            Determine.load(did)
+        gids = [item[0] for item in Manager.db.select_data(table='group', columns=['gid'])]
+        for gid in gids:
+            Group.load(gid)
+        mids = [item[0] for item in Manager.db.select_data(table='meeting', columns=['mid'])]
+        for mid in mids:
+            Meeting.load(mid)
+        rids = [item[0] for item in Manager.db.select_data(table='room', columns=['rid'])]
+        for rid in rids:
+            Room.load(rid)
+        tids = [item[0] for item in Manager.db.select_data(table='tag', columns=['tid'])]
+        for tid in tids:
+            Tag.load(tid)
+        uids = [item[0] for item in Manager.db.select_data(table='user', columns=['uid'])]
+        for uid in uids:
+            User.load(uid)
+
+
+Manager.load_objects()
