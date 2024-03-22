@@ -10,3 +10,10 @@ from .room import Room
 from .tag import Tag
 from .user import User
 from .manager import Manager
+
+Determine.load_all()
+Group.load_all()
+Meeting.load_all()
+Room.load_all()
+Tag.load_all()
+User.load_all()
