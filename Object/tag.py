@@ -8,7 +8,7 @@ from Object import Manager
 
 
 class Tag:
-    """ 标签"""
+    """标签"""
 
     def __init__(self, name: str, permissions: List[Permission], targets: List[str], created_by: uuid,
                  expire: datetime | None = None):

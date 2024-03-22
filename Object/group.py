@@ -20,8 +20,7 @@ class Group:
             'gid': self.gid,
             'name': name,
             'belong_to': belong_to,
-            'permissions': json.dumps(permissions),
-            'targets': json.dumps(targets)
+            'permissions': json.dumps(permissions)
         })
         Manager.groups[self.gid] = self
 

@@ -19,7 +19,6 @@ class Group(BaseModel):
     name: str
     belong_to: uuid
     permissions: List[Permission]
-    targets: List[uuid]
 
 
 class GroupGetResponse(Group):

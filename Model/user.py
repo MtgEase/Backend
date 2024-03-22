@@ -31,6 +31,7 @@ class User(BaseModel):
     """用户的数据模型"""
     info: UserInfo
     hashed_passwd: str
+    group: uuid
 
 
 class UserGetResponse(BaseModel):
